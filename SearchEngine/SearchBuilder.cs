@@ -31,7 +31,7 @@ namespace SearchEngine
 
 				BuildWinners(result);
 
-				GetTotalWinner(result);
+			//	GetTotalWinner(result);
 
 				Console.ReadLine();
 			}
@@ -81,47 +81,83 @@ namespace SearchEngine
 			};
 		}
 
+		
+
 		public void BuildWinners(IEnumerable<SearchResult> searchResult)
 		{
-			foreach (SearchFactory.SearchOption option in Enum.GetValues(typeof(SearchFactory.SearchOption)))
+
+			if (searchResult != null && searchResult.Any())
 			{
-				Console.WriteLine(option.ToString() + " Winner:" + GetWinner(option, searchResult));
+				var winners = from result in searchResult
+							  group result by result.option into g
+							  let topSearch = g.Max(x => Int64.Parse(x.Output))
+							  select new
+							  {
+								  option = g.Key,
+								  input = g.First(y =>Int64.Parse(y.Output) == topSearch).Input,
+								  output = topSearch
+							  };
+				Console.WriteLine("******Who is a winner in Each options: *****\n");
+
+					foreach (var winner in winners)
+					{
+
+						Console.WriteLine(winner.option.ToString() + " Winner:" + winner.input);
+					}
+
+				Console.WriteLine("*************************\n");
+				Console.WriteLine("\n");
+				Console.WriteLine("******Who is a Total winner :********\n");
 			}
 
 			Console.WriteLine("Total Winner:" + GetTotalWinner(searchResult));
 
-		}
-
-		public string GetWinner(SearchFactory.SearchOption option, IEnumerable<SearchResult> searchResult)
-		{
-			if (searchResult != null && searchResult.Any())
-			{
-				var FilterSearchResult = searchResult.Where(x => x.option.ToString().ToLower() == option.ToString().ToLower());
-				return FilterSearchResult.WhereMax(max => max.Output).Input;
-			}
-			return string.Empty;
+			Console.WriteLine("*************************\n");
 		}
 
 		public string GetTotalWinner(IEnumerable<SearchResult> searchResult)
 		{
-			if (searchResult != null && searchResult.Any())
-			{
-				return searchResult.WhereMax(max => max.Output).Input;
-			}
+			
+				if (searchResult != null && searchResult.Any())
+				{
+					var maxResult = from result in searchResult
+									group result by result.Input into g
+									select new
+									{
+										input = g.Key,
+										TotalResult = g.Sum(x => Int64.Parse(x.Output))
+									};
+
+				var winner = from result in maxResult
+							 group result by result.TotalResult into g
+							 orderby g.Key descending
+							 select new
+							 {
+								 TotalResult = g.Key,
+								 input = g.Select(x => x.input).First()
+							 };
+
+					return winner != null ?
+						winner.FirstOrDefault().input.ToString() : string.Empty;
+				}
 			return string.Empty;
 
 		}
 
-		public void PrintSearchResult(IEnumerable<SearchResult> searchResult)
+		public  void PrintSearchResult(IEnumerable<SearchResult> searchResult)
 		{
 			int intCount = 1;
+			Console.WriteLine("*************************\n");
 			foreach (SearchResult result in searchResult)
 			{
 				Console.WriteLine(result.Input + ":" + result.option.ToString() + ":" + result.Output);
-				if (intCount % 2 == 0)
+				if (intCount % 4 == 0)
 				{
-					Console.WriteLine("\n");
+					Console.WriteLine("*************************\n");
+					//Console.WriteLine("\n");
 				}
+
+				intCount++;
 			}
 		}
 

@@ -119,7 +119,7 @@ namespace SearchEngine
             if (jobject == null || jobject["searchInformation"] == null ||
              jobject["searchInformation"]["totalResults"] == null)
             {
-                return "No Records";
+                return "0";
             }
             else
             {

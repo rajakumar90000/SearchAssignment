@@ -80,7 +80,7 @@ namespace SearchEngine
 
 				if (jobject == null || jobject["webPages"] == null || jobject["webPages"]["totalEstimatedMatches"] == null)
 				{
-					return "No Records";
+					return "0";
 				}
 				else
 				{

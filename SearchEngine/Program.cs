@@ -13,14 +13,16 @@ namespace SearchEngine
 		static void Main(string[] args)
 		{
 
-			//if (args.Length == 0)
-			//{
-			//	Console.WriteLine("Search Input Parameters is Empty"); // Check for null array
-			//	return;
-			//}
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Search Input Parameters is Empty"); // Check for null array
+                return;
+            }
 
-			var inputs = new string[1];
-			inputs[0] = "java";
+            var inputs = new string[args.Length];
+			int i = 0;
+			args.ToList().ForEach(x => { inputs[i] = x; i++; });
+		
 			SearchFactory factory = new SearchFactory();
 			SearchBuilder buildobj = new SearchBuilder(factory);
 			buildobj.GenerateSearchResult(inputs);
