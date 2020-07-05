@@ -37,7 +37,7 @@ public class DuckDuckgoSearch : ISearchOp
 
 		if (jobject == null || jobject["RelatedTopics"]== null)
 		{
-			return "No Records";
+			return "0";
 		}
 		else
 		{

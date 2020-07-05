@@ -39,21 +39,16 @@ namespace SearchEngine
             var responseContent = await  httpResponseMessage.Content.ReadAsStringAsync();
             var jobject =  (JObject)JsonConvert.DeserializeObject(responseContent);
 
-            if (jobject == null ||jobject["properties"] == null||
-                jobject["properties"]["SearchRequest"] == null ||
-                jobject["properties"]["ResponseMetaData"]["SearchRequest"] == null||
-             jobject["properties"]["ResponseMetaData"]["SearchRequest"]["results"] == null)
+            if (jobject == null )
             {
-                return "No Records";
+                return "0";
             }
             else
             {
                 var totalResults = (JValue)jobject["properties"]["ResponseMetaData"]["SearchRequest"]["results"];
 
                 return totalResults != null ? totalResults.Value<string>() : string.Empty;
-            }
-
-//return totalResults; 
+            } 
 
         }
     }

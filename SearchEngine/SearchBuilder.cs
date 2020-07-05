@@ -20,7 +20,7 @@ namespace SearchEngine
 			{
 				var searchList = new List<string>();
 
-				for (int i = 0; i <= inputs.Length - 1; i++) // Loop through array
+				for (int i = 0; i <= inputs.Length - 1; i++) 
 				{
 					searchList.Add(inputs[i]);
 				}
@@ -28,6 +28,10 @@ namespace SearchEngine
 				var result = BuildSearchResult(searchList).GetAwaiter().GetResult();
 
 				PrintSearchResult(result);
+
+				BuildWinners(result);
+
+				GetTotalWinner(result);
 
 				Console.ReadLine();
 			}
